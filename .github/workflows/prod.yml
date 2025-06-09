@@ -23,16 +23,19 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/github-action-test:${{github.sha}}
       - name: Push to ops
+        env:
+          PAT: ${{ secrets.PAT }}
         run: |
           git clone https://github.com/Anurag-S1ngh/argocd.git
           cd argocd
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
 
           cat manifest.yml
           sed -i "s|image: \"anurag1829/github-action-test:.*\"|image: \"anurag1829/github-action-test:${{ github.sha }}\"|" manifest.yml
           cat manifest.yml
 
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
           git add .
-          git commit -m "update"
-          git push origin master
+          git commit -m "Updated image to ${{ github.sha }}"
+          git push https://${PAT}@github.com/Anurag-S1ngh/argocd.git master
