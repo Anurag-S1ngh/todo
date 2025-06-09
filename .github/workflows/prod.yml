@@ -25,9 +25,7 @@ jobs:
       - name: Push to ops
         run: |
           git clone https://github.com/Anurag-S1ngh/argocd.git
-
-          cd todo 
-          ls
+          cd argocd
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
 
